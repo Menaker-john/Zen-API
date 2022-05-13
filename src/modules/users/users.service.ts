@@ -2,49 +2,69 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { User, UserDocument } from 'src/schema/user.schema';
-import { UserDTO } from './dtos/user.dto';
-import { AuthUserDTO } from './dtos/auth-user.dto';
+import { User } from './dtos/user.dto';
+import { UserCredentials } from './dtos/user-credentials.dto';
+import { RepositoryService } from '../repository/repository.service';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    private repository: RepositoryService
+  ) {}
 
-  async create(userPayload: UserDTO): Promise<string> {
-    const { username } = userPayload;
-    const user = await this.userModel.findOne({ username });
-    if (user) {
-      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
-    }
-    const createdUser = new this.userModel(userPayload);
-    await createdUser.save();
-    return createdUser._id;
+
+  private async comparePasswords(lhs: string, rhs: string): Promise<boolean> {
+    return await bcrypt.compare(lhs, rhs);
   }
 
-  async validateCredentials(userPayload: AuthUserDTO): Promise<string> {
-    const { username, password } = userPayload;
-    const user = await this.userModel.findOne({ username });
-    if (!user) {
-      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
-    }
-    if (await bcrypt.compare(password, user.password)) {
-      return user._id;
-    } else {
+  private async throwIfNotSamePassword(lhs: string, rhs: string){
+    if (!(await this.comparePasswords(lhs, rhs)))
       throw new HttpException('Invalid credentials', HttpStatus.BAD_REQUEST);
-    }
   }
 
-  async findById(payload: any): Promise<UserDTO> {
-    const { _id } = payload;
-    const user = await this.userModel.findOne({ _id }, { password: 0 });
-    if (!user) {
-      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
-    }
+  private throwIfUserExists(user: User): void {
+    if (user)
+      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+  }
 
+  private throwIfUserMissing(user: User): void {
+    if(!user)
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+  }
+
+  private async throwIfAlreadyExists(userPayload: User) {
+    const user = await this.fetchUserByUsername(userPayload.username);
+    this.throwIfUserExists(user);
+  }
+
+  private async fetchUserThrowIfMissing(userPayload: User): Promise<User>{
+    const user = await this.repository.users.fetchOne({username: userPayload.username}) as User;
+    this.throwIfUserMissing(user);
     return user;
   }
 
-  async findAll(): Promise<UserDTO[]> {
-    return await this.userModel.find({}, { password: 0 }).exec();
+  async create(userPayload: User) {
+    this.throwIfAlreadyExists(userPayload);
+    return await this.repository.users.create(userPayload) as User;
+  }
+
+  async validateCredentials(credentials: UserCredentials) {
+    const user = await this.fetchUserThrowIfMissing(credentials as User);
+    await this.throwIfNotSamePassword(credentials.password, user.password);
+    return user
+  }
+
+  async fetchUserByUsername(username: string): Promise<User> {
+    return await this.repository.users.fetchOne({ username }) as User;
+  }
+
+  async findById(payload: any): Promise<User> {
+    const user = await this.repository.users.find(payload._id) as User;
+    this.throwIfUserMissing(user);
+    return user;
+  }
+
+  async findAll(): Promise<User[]> {
+    return await this.repository.users.fetch({}, { password: 0 }) as User[];
   }
 }

@@ -6,6 +6,7 @@ import { AuthModule } from '../auth/auth.module';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { JwtStrategy } from '../auth/strategies/jwt.strategy';
+import { RepositoryModule } from '../repository/repository.module';
 import { RolesGuard } from '../roles/guards/roles.guard';
 import { UsersModule } from '../users/users.module';
 
@@ -13,6 +14,7 @@ import { UsersModule } from '../users/users.module';
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_URI),
+    RepositoryModule,
     UsersModule,
     AuthModule,
   ],

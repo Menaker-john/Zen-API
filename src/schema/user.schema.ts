@@ -7,7 +7,6 @@ export type UserDocument = User & mongoose.Document;
 
 @Schema()
 export class User {
-  @Prop() _id: mongoose.Schema.Types.ObjectId
   @Prop({ required: true, unique: true }) username: string;
   @Prop({ required: true }) password: string;
   @Prop() roles: Role[];

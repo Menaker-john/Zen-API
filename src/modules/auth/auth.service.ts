@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { sign } from 'jsonwebtoken';
-import { ObjectId } from 'mongoose';
-import { UserDTO } from '../users/dtos/user.dto';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -14,7 +12,7 @@ export class AuthService {
     });
   }
 
-  async validate(payload: any): Promise<UserDTO> {
+  async validate(payload: any) {
     return await this.userService.findById(payload);
   }
 }

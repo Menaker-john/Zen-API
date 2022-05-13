@@ -1,12 +1,11 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { Role } from '../roles/role.enum';
-import { Roles } from '../roles/roles.decorator';
-import { AuthUserDTO } from '../users/dtos/auth-user.dto';
-import { UserDTO } from '../users/dtos/user.dto';
+import { Roles } from '../roles/decorators/roles.decorator';
+import { UserCredentials } from '../users/dtos/user-credentials.dto';
+import { User } from '../users/dtos/user.dto';
 import { UsersService } from '../users/users.service';
+import { Public } from './decorators/public.decorator';
 import { AuthService } from './auth.service';
-import { AuthDTO } from './dtos/auth.dto';
-import { Public } from './guards/jwt.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -17,17 +16,17 @@ export class AuthController {
 
   @Roles(Role.Admin)
   @Post('register')
-  async register(@Body() userPayload: UserDTO): Promise<AuthDTO> {
-    const _id = await this.userService.create(userPayload);
-    const token = await this.authService.signPayload(_id);
-    return { _id, token };
+  async register(@Body() userPayload: User) {
+    const user = await this.userService.create(userPayload);
+    const token = await this.authService.signPayload(user._id);
+    return { _id: user._id, token };
   }
 
   @Public()
   @Post('login')
-  async login(@Body() userPayload: AuthUserDTO): Promise<AuthDTO> {
-    const _id = await this.userService.validateCredentials(userPayload);
-    const token = await this.authService.signPayload(_id);
-    return { _id, token };
+  async login(@Body() userPayload: UserCredentials) {
+    const user = await this.userService.validateCredentials(userPayload);
+    const token = await this.authService.signPayload(user._id);
+    return { _id: user._id, token };
   }
 }

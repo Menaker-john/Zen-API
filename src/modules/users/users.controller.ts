@@ -1,8 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { Role } from '../roles/role.enum';
-import { Roles } from '../roles/roles.decorator';
+import { Roles } from '../roles/decorators/roles.decorator';
 import { UsersService } from '../users/users.service';
-import { UserDTO } from './dtos/user.dto';
 
 @Roles(Role.Admin)
 @Controller('users')
@@ -12,7 +11,7 @@ export class UsersController {
   ) {}
 
   @Get('list')
-  async list(): Promise<UserDTO[]>{
+  async list() {
     return this.userService.findAll()
   }
 }
