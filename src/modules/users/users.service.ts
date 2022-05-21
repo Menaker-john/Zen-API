@@ -21,14 +21,8 @@ export class UsersService {
     return this.repository.users.fetchOne({ username });
   }
 
-  async findById(payload: any): Promise<User> {
-    return this.repository.users.fetchOne(
-      { _id: payload._id },
-      { password: 0 },
-    );
-  }
-
   async findAll(): Promise<User[]> {
     return this.repository.users.fetch({}, { password: 0 });
   }
+
 }

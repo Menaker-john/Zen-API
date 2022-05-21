@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Role } from 'src/modules/roles/role.enum';
+import { UserProfile } from './user-profile.schema';
 
 export type UserDocument = User & mongoose.Document;
 
@@ -10,6 +11,7 @@ export class User {
   @Prop() _id: mongoose.Types.ObjectId;
   @Prop({ required: true, unique: true }) username: string;
   @Prop({ required: true }) password: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }) profile: UserProfile;
   @Prop() roles: Role[];
 }
 
