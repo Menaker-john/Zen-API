@@ -1,8 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { Role } from '../roles/role.enum';
-import { Roles } from '../roles/decorators/roles.decorator';
-import { UsersService } from '../users/users.service';
+import { Role, Roles } from '../roles';
 import { User } from './dtos/user.dto';
+import { UsersService } from './users.service';
 
 @Roles(Role.Admin)
 @Controller('users')

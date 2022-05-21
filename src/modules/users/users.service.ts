@@ -1,8 +1,7 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 import { Types } from 'mongoose';
+import { RepositoryService } from '../repository';
 import { User } from './dtos/user.dto';
-import { RepositoryService } from '../repository/repository.service';
-
 @Injectable()
 export class UsersService {
   constructor(private repository: RepositoryService) {}
@@ -19,17 +18,17 @@ export class UsersService {
     await this.repository.users.create(userPayload);
   }
   async fetchUserByUsername(username: string): Promise<User> {
-    return (await this.repository.users.fetchOne({ username })) as User;
+    return this.repository.users.fetchOne({ username });
   }
 
   async findById(payload: any): Promise<User> {
-    return (await this.repository.users.fetchOne(
+    return this.repository.users.fetchOne(
       { _id: payload._id },
       { password: 0 },
-    )) as User;
+    );
   }
 
   async findAll(): Promise<User[]> {
-    return (await this.repository.users.fetch({}, { password: 0 })) as User[];
+    return this.repository.users.fetch({}, { password: 0 });
   }
 }

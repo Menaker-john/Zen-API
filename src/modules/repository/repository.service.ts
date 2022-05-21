@@ -5,7 +5,6 @@ import { User, UserDocument } from 'src/schema/user.schema';
 import { GenericRepositoryService } from './generic.service';
 import { GenericRepository } from './repositories/generic.repository';
 import { MongoGenericRepository } from './repositories/mongo-generic.repository';
-
 @Injectable()
 export class RepositoryService
   implements GenericRepositoryService, OnApplicationBootstrap

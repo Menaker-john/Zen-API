@@ -15,12 +15,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: any, done: VerifiedCallback) {
     const user = await this.authService.validate(payload);
-    if (!user) {
+    if (!user)
       return done(
         new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED),
         false,
       );
-    }
+
     return done(null, user, payload.iat);
   }
 }

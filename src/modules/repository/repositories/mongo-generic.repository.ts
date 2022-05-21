@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { GenericRepository } from './generic.repository';
+import { GenericRepository } from '..';
 
 export class MongoGenericRepository<T> implements GenericRepository<T> {
   constructor(private _repository: Model<T>) {}

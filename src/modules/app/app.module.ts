@@ -2,13 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthModule } from '../auth/auth.module';
-import { AuthService } from '../auth/auth.service';
-import { JwtAuthGuard } from '../auth/guards/jwt.guard';
-import { JwtStrategy } from '../auth/strategies/jwt.strategy';
-import { RepositoryModule } from '../repository/repository.module';
-import { RolesGuard } from '../roles/guards/roles.guard';
-import { UsersModule } from '../users/users.module';
+import { AuthModule, AuthService, JwtAuthGuard, JwtStrategy } from '../auth';
+import { RepositoryModule } from '../repository';
+import { RolesGuard } from '../roles';
+import { UsersModule } from '../users';
 
 @Module({
   imports: [

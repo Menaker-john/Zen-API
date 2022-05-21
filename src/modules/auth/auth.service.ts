@@ -2,16 +2,12 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { sign } from 'jsonwebtoken';
 import { Types } from 'mongoose';
 import { compare } from 'bcrypt';
-import { RepositoryService } from '../repository/repository.service';
+import { RepositoryService } from '../repository';
 import { Credentials } from './dtos/credentials.dto';
 
 @Injectable()
 export class AuthService {
   constructor(private repository: RepositoryService) {}
-
-  private async comparePasswords(lhs: string, rhs: string): Promise<boolean> {
-    return compare(lhs, rhs);
-  }
 
   async signPayload(_id: Types.ObjectId): Promise<string> {
     return sign({ _id }, process.env.SECRET_KEY, {
@@ -20,7 +16,7 @@ export class AuthService {
   }
 
   async validate(payload: any) {
-    console.log(payload);
+    payload._id = Types.ObjectId.createFromHexString(payload._id);
     return this.repository.users.find(payload._id);
   }
 

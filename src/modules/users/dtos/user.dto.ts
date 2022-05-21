@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { Role } from 'src/modules/roles/role.enum';
+import { Role } from 'src/modules/roles';
 
 export class User {
   _id: Types.ObjectId;
