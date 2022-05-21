@@ -1,15 +1,20 @@
-import { Model } from "mongoose";
-import { GenericRepository } from "./generic.repository";
+import { Model } from 'mongoose';
+import { GenericRepository } from './generic.repository';
 
 export class MongoGenericRepository<T> implements GenericRepository<T> {
-
   constructor(private _repository: Model<T>) {}
 
-  fetch(query: {}, projection: {} = {}): Promise<T[]> {
+  fetch(
+    query: Record<string, unknown>,
+    projection: Record<string, unknown> = {},
+  ): Promise<T[]> {
     return this._repository.find(query, projection).exec();
   }
 
-  fetchOne(query: {}, projection: {} = {}): Promise<T> {
+  fetchOne(
+    query: Record<string, unknown>,
+    projection: Record<string, unknown> = {},
+  ): Promise<T> {
     return this._repository.findOne(query, projection).exec();
   }
 
@@ -22,11 +27,14 @@ export class MongoGenericRepository<T> implements GenericRepository<T> {
   }
 
   create(item: T): Promise<T> {
-    return this._repository.create(item);
+    try {
+      return this._repository.create(item);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  update(_id: string, item: T){
+  update(_id: string, item: T) {
     return this._repository.findByIdAndUpdate(_id, item);
   }
-  
 }

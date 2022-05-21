@@ -1,8 +1,9 @@
-import { Role } from "src/modules/roles/role.enum";
+import { Types } from 'mongoose';
+import { Role } from 'src/modules/roles/role.enum';
 
 export class User {
-  _id: string;
+  _id: Types.ObjectId;
   username: string;
   password: string;
-  roles: Role[]
+  roles: Role[];
 }
