@@ -32,7 +32,7 @@ export class AuthService {
     });
 
     if (!user) throw new UnauthorizedException();
-    
+
     if (!(await compare(credentials.password, user.password)))
       throw new UnauthorizedException();
 

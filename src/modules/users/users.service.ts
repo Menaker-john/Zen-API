@@ -1,28 +1,40 @@
-import { Injectable, ConflictException } from '@nestjs/common';
-import { Types } from 'mongoose';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { RepositoryService } from '../repository';
 import { User } from './dtos/user.dto';
 @Injectable()
 export class UsersService {
   constructor(private repository: RepositoryService) {}
 
-  private async userAlreadyExists(username: string) {
-    return (await this.fetchUserByUsername(username)) != undefined;
-  }
-
   async create(userPayload: User) {
-    if (await this.userAlreadyExists(userPayload.username))
-      throw new ConflictException();
-
-    userPayload._id = new Types.ObjectId();
-    await this.repository.users.create(userPayload);
+    try {
+      await this.repository.users.create(userPayload);
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
+
   async fetchUserByUsername(username: string): Promise<User> {
-    return this.repository.users.fetchOne({ username });
+    try {
+      return this.repository.users.fetchOne({ username });
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 
   async findAll(): Promise<User[]> {
-    return this.repository.users.fetch({}, { password: 0 });
+    try {
+      return this.repository.users.fetch({}, { password: 0 });
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 
+  async userAlreadyExists(username: string) {
+    try {
+      return (await this.fetchUserByUsername(username)) != undefined;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+  
 }

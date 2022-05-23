@@ -1,3 +1,4 @@
+import { ImATeapotException } from '@nestjs/common/exceptions/im-a-teapot.exception';
 import { Model } from 'mongoose';
 import { GenericRepository } from '..';
 
@@ -29,8 +30,8 @@ export class MongoGenericRepository<T> implements GenericRepository<T> {
   create(item: T): Promise<T> {
     try {
       return this._repository.create(item);
-    } catch (error) {
-      throw error;
+    } catch (err) {
+      throw new ImATeapotException();
     }
   }
 
