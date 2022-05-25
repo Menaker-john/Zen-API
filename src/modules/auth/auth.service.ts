@@ -31,7 +31,8 @@ export class AuthService {
       username: credentials.username,
     });
 
-    if (!user) throw new UnauthorizedException();
+    if (!user)
+      throw new UnauthorizedException();
 
     if (!(await compare(credentials.password, user.password)))
       throw new UnauthorizedException();

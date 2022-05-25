@@ -28,11 +28,7 @@ export class MongoGenericRepository<T> implements GenericRepository<T> {
   }
 
   create(item: T): Promise<T> {
-    try {
-      return this._repository.create(item);
-    } catch (err) {
-      throw new ImATeapotException();
-    }
+    return this._repository.create(item);
   }
 
   update(_id: string, item: T) {
