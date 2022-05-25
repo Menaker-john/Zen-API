@@ -17,7 +17,7 @@ export class User {
       last: { type: String },
     }),
   )
-  name: Record<string, unknown>;
+  name: Record<string, string>;
 
   @Prop() email: string;
   @Prop({ type: [String], enum: Role }) roles: Role[];
