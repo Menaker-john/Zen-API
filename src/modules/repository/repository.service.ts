@@ -14,11 +14,14 @@ export class RepositoryService
 
   constructor(
     @InjectModel(User.name) private UserRepository: Model<UserDocument>,
-    @InjectModel(Customer.name) private CustomerRepository: Model<CustomerDocument>,
+    @InjectModel(Customer.name)
+    private CustomerRepository: Model<CustomerDocument>,
   ) {}
 
   onApplicationBootstrap() {
     this.users = new MongoGenericRepository<User>(this.UserRepository);
-    this.customers = new MongoGenericRepository<Customer>(this.CustomerRepository);
+    this.customers = new MongoGenericRepository<Customer>(
+      this.CustomerRepository,
+    );
   }
 }

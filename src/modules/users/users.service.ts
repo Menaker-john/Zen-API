@@ -36,5 +36,4 @@ export class UsersService {
       throw new InternalServerErrorException();
     }
   }
-  
 }

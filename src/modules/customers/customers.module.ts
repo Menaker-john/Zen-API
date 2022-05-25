@@ -1,15 +1,12 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { RepositoryModule } from '../repository';
 
-
 @Module({
-  imports: [
-    RepositoryModule,
-  ],
+  imports: [RepositoryModule],
   controllers: [],
   providers: [],
   exports: [],
 })
 export class CustomersModule {
-  configure(consumer: MiddlewareConsumer) { }
+  configure(consumer: MiddlewareConsumer) {}
 }

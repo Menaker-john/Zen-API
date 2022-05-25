@@ -2,14 +2,21 @@ import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Role } from 'src/modules/roles/role.enum';
+import { ContactInfo } from './contact-info.schema';
 
 export type UserDocument = User & mongoose.Document;
 
 @Schema()
 export class User {
-  @Prop() _id: mongoose.Types.ObjectId;
-  @Prop({ required: true, unique: true }) username: string;
-  @Prop({ required: true }) password: string;
+  @Prop()
+  _id: mongoose.Types.ObjectId;
+
+  @Prop({ required: true, unique: true })
+  username: string;
+
+  @Prop({ required: true })
+  password: string;
+
   @Prop(
     raw({
       first: { type: String },
@@ -19,8 +26,11 @@ export class User {
   )
   name: Record<string, string>;
 
-  @Prop() email: string;
-  @Prop({ type: [String], enum: Role }) roles: Role[];
+  @Prop({ type: [String], enum: Role })
+  roles: Role[];
+
+  @Prop()
+  contactInfo: ContactInfo;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

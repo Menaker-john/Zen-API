@@ -7,8 +7,8 @@ export class CustomersController {
   constructor(private userService: CustomersService) {}
 
   @Get('list')
-  async list() { }
+  async list() {}
 
   @Post('create')
-  async create(@Body() customerPayload) { }
+  async create(@Body() customerPayload) {}
 }
