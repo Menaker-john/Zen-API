@@ -1,5 +1,6 @@
 export abstract class GenericRepository<T> {
   abstract findAll(): Promise<T[]>;
+  abstract findAndHydrate(children: string[]): Promise<T[]>;
   abstract find(_id: string): Promise<T>;
   abstract fetch(
     query: Record<string, unknown>,

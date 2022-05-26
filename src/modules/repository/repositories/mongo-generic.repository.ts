@@ -19,6 +19,10 @@ export class MongoGenericRepository<T> implements GenericRepository<T> {
     return this._repository.findOne(query, projection).exec();
   }
 
+  findAndHydrate(children: string[]): Promise<T[]> {
+    return children.reduce((cursor, v) => cursor.populate(v), this._repository.find()).exec()
+  }
+
   findAll(): Promise<T[]> {
     return this._repository.find().exec();
   }

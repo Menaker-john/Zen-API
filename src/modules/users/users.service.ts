@@ -1,37 +1,13 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Credentials } from '../auth/dtos/credentials.dto';
 import { RepositoryService } from '../repository';
-import { User } from './dtos/user.dto';
 @Injectable()
 export class UsersService {
   constructor(private repository: RepositoryService) {}
 
-  async create(userPayload: User) {
+  async findAll(): Promise<Credentials[]> {
     try {
-      await this.repository.users.create(userPayload);
-    } catch (error) {
-      throw new InternalServerErrorException();
-    }
-  }
-
-  async fetchUserByUsername(username: string): Promise<User> {
-    try {
-      return this.repository.users.fetchOne({ username });
-    } catch (error) {
-      throw new InternalServerErrorException();
-    }
-  }
-
-  async findAll(): Promise<User[]> {
-    try {
-      return this.repository.users.fetch({}, { password: 0 });
-    } catch (error) {
-      throw new InternalServerErrorException();
-    }
-  }
-
-  async userAlreadyExists(username: string) {
-    try {
-      return (await this.fetchUserByUsername(username)) != undefined;
+      return this.repository.credentials.findAndHydrate(["profile"] );
     } catch (error) {
       throw new InternalServerErrorException();
     }

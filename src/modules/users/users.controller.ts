@@ -12,9 +12,4 @@ export class UsersController {
   async list() {
     return this.userService.findAll();
   }
-
-  @Post('create')
-  async create(@Body() userPayload: User) {
-    await this.userService.create(userPayload);
-  }
 }

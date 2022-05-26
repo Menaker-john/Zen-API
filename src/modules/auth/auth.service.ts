@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { sign } from 'jsonwebtoken';
 import { Types } from 'mongoose';
 import { compare } from 'bcrypt';
@@ -17,7 +17,7 @@ export class AuthService {
 
   async validate(payload: any) {
     payload._id = Types.ObjectId.createFromHexString(payload._id);
-    return this.repository.users.find(payload._id);
+    return this.repository.credentials.find(payload._id);
   }
 
   async login(credentials: Credentials) {
@@ -26,8 +26,32 @@ export class AuthService {
     return { _id: user._id, token };
   }
 
+  async create(credentials: Credentials) {
+    try {
+      await this.repository.credentials.create(credentials);
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async fetchByUsername(username: string): Promise<Credentials> {
+    try {
+      return this.repository.credentials.fetchOne({ username });
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async userAlreadyExists(username: string) {
+    try {
+      return (await this.fetchByUsername(username)) != undefined;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
   private async validateCredentials(credentials: Credentials) {
-    const user = await this.repository.users.fetchOne({
+    const user = await this.repository.credentials.fetchOne({
       username: credentials.username,
     });
 

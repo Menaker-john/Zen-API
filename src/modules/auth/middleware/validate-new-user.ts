@@ -1,16 +1,16 @@
 import { ConflictException, Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { User } from '../dtos/user.dto';
-import { UsersService } from '../users.service';
+import { AuthService } from '../auth.service';
+import { Credentials } from '../dtos/credentials.dto';
 
 @Injectable()
 export class ValidateNewUser implements NestMiddleware {
-  constructor(private userService: UsersService) {}
+  constructor(private authService: AuthService) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    const user = req.body as User;
+    const user = req.body as Credentials;
 
-    if (await this.userService.userAlreadyExists(user.username))
+    if (await this.authService.userAlreadyExists(user.username))
       throw new ConflictException();
 
     next();
