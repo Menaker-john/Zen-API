@@ -8,7 +8,10 @@ async function bootstrap() {
   app.use(helmet());
   app.useGlobalPipes(
     new ValidationPipe({
-      disableErrorMessages: true,
+      disableErrorMessages: false,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
     }),
   );
   await app.listen(3000);

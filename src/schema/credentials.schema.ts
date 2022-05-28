@@ -1,7 +1,6 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Profile } from './profile.schema';
 import { Role } from 'src/modules/roles';
 
 export type CredentialsDocument = Credentials & mongoose.Document;
@@ -17,12 +16,11 @@ export class Credentials {
   @Prop({ required: true })
   password: string;
 
-  @Prop({type: mongoose.Types.ObjectId, ref: 'Profile'})
+  @Prop({ type: mongoose.Types.ObjectId, ref: 'Profile' })
   profile: mongoose.Types.ObjectId;
 
   @Prop({ type: [String], enum: Role })
   roles: Role[];
-
 }
 
 export const CredentialsSchema = SchemaFactory.createForClass(Credentials);

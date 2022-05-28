@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { Role, Roles } from '../roles';
 import { CustomersService } from './customers.service';
 
 @Controller('customers')

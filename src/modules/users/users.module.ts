@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { RepositoryModule } from '../repository';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
@@ -9,4 +9,4 @@ import { UsersService } from './users.service';
   providers: [UsersService],
   exports: [UsersService],
 })
-export class UsersModule { }
+export class UsersModule {}

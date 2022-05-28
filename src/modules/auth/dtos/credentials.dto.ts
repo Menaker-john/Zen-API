@@ -1,5 +1,5 @@
-import * as mongoose from "mongoose";
-import { Role } from "src/modules/roles";
+import * as mongoose from 'mongoose';
+import { Role } from 'src/modules/roles';
 
 export class Credentials {
   _id: mongoose.Types.ObjectId;

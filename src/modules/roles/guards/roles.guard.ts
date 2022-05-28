@@ -14,14 +14,19 @@ export class RolesGuard implements CanActivate {
     ]);
   }
 
+  private getBody(context: ExecutionContext) {
+    return context.switchToHttp().getRequest();
+  }
+
+  private validateRoles(user: any, requiredRoles: string[]) {
+    if (!requiredRoles) return true;
+    if (!user) return false;
+    return requiredRoles.some((role: string) => user.roles?.includes(role));
+  }
+
   canActivate(context: ExecutionContext): boolean {
     const requiredRoles = this.requiredRoles(context);
-
-    if (!requiredRoles) return true;
-
-    const { user } = context.switchToHttp().getRequest();
-    if (!user) return false;
-
-    return requiredRoles.some((role) => user.roles?.includes(role));
+    const body = this.getBody(context);
+    return this.validateRoles(body.user, requiredRoles);
   }
 }

@@ -9,7 +9,9 @@ import { RepositoryService } from './repository.service';
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     MongooseModule.forFeature([{ name: Profile.name, schema: ProfileSchema }]),
-    MongooseModule.forFeature([{ name: Credentials.name, schema: CredentialsSchema }]),
+    MongooseModule.forFeature([
+      { name: Credentials.name, schema: CredentialsSchema },
+    ]),
     MongooseModule.forFeature([
       { name: Customer.name, schema: CustomerSchema },
     ]),

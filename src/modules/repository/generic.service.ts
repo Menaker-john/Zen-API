@@ -1,5 +1,4 @@
 import { Credentials, User, Profile } from 'src/schema';
-import {  } from 'src/schema/profile.schema';
 import { GenericRepository } from './repositories/generic.repository';
 
 export abstract class GenericRepositoryService {

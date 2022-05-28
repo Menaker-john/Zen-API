@@ -1,6 +1,5 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { RepositoryModule } from '../repository';
-import { UsersModule } from '../users';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { CreateUserId } from './middleware/create-user-id';

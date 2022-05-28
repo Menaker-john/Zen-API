@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { sign } from 'jsonwebtoken';
 import { Types } from 'mongoose';
 import { compare } from 'bcrypt';
@@ -16,7 +20,6 @@ export class AuthService {
   }
 
   async validate(payload: any) {
-    payload._id = Types.ObjectId.createFromHexString(payload._id);
     return this.repository.credentials.find(payload._id);
   }
 

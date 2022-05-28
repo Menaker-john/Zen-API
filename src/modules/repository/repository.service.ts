@@ -1,7 +1,14 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument, Customer, CustomerDocument, Credentials, CredentialsDocument, Profile, ProfileDocument } from 'src/schema';
+import {
+  User,
+  UserDocument,
+  Credentials,
+  CredentialsDocument,
+  Profile,
+  ProfileDocument,
+} from 'src/schema';
 import { GenericRepositoryService } from './generic.service';
 import { GenericRepository } from './repositories/generic.repository';
 import { MongoGenericRepository } from './repositories/mongo-generic.repository';
@@ -15,13 +22,17 @@ export class RepositoryService
 
   constructor(
     @InjectModel(User.name) private UserRepository: Model<UserDocument>,
-    @InjectModel(Credentials.name) private CredentialsRepository: Model<CredentialsDocument>,
-    @InjectModel(Profile.name) private ProfileRepository: Model<ProfileDocument>,
+    @InjectModel(Credentials.name)
+    private CredentialsRepository: Model<CredentialsDocument>,
+    @InjectModel(Profile.name)
+    private ProfileRepository: Model<ProfileDocument>,
   ) {}
 
   onApplicationBootstrap() {
     this.users = new MongoGenericRepository<User>(this.UserRepository);
-    this.credentials = new MongoGenericRepository<Credentials>(this.CredentialsRepository);
+    this.credentials = new MongoGenericRepository<Credentials>(
+      this.CredentialsRepository,
+    );
     this.profiles = new MongoGenericRepository<Profile>(this.ProfileRepository);
   }
 }

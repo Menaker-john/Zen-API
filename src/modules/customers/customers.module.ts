@@ -7,6 +7,4 @@ import { RepositoryModule } from '../repository';
   providers: [],
   exports: [],
 })
-export class CustomersModule {
-  configure(consumer: MiddlewareConsumer) {}
-}
+export class CustomersModule {}
