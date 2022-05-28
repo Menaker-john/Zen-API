@@ -8,7 +8,11 @@ export class UsersService {
 
   async findAll(options: PaginationParams): Promise<User[]> {
     try {
-      return this.repository.credentials.findAndHydrate({}, ['profile'], options);
+      return this.repository.credentials.findAndHydrate(
+        {},
+        ['profile'],
+        options,
+      );
     } catch (error) {
       throw new InternalServerErrorException();
     }

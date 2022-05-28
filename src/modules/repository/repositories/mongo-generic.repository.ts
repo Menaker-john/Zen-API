@@ -23,7 +23,10 @@ export class MongoGenericRepository<T> implements GenericRepository<T> {
     if (!query) query = {};
     if (!options) options = {};
     return children
-      .reduce((cursor, path) => cursor.populate(path), this._repository.find(query, {password: 0}, options))
+      .reduce(
+        (cursor, path) => cursor.populate(path),
+        this._repository.find(query, { password: 0 }, options),
+      )
       .exec();
   }
 

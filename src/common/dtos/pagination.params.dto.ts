@@ -1,4 +1,4 @@
-import { IsNumber, Min, Max } from "class-validator";
+import { IsNumber, Min, Max } from 'class-validator';
 
 export class PaginationParams {
   @IsNumber()

@@ -1,6 +1,10 @@
 export abstract class GenericRepository<T> {
   abstract findAll(): Promise<T[]>;
-  abstract findAndHydrate(query: any, children: string[], options: any): Promise<T[]>;
+  abstract findAndHydrate(
+    query: any,
+    children: string[],
+    options: any,
+  ): Promise<T[]>;
   abstract find(_id: string): Promise<T>;
   abstract applyPatches(_id: string, patches: unknown): Promise<T>;
   abstract fetch(
