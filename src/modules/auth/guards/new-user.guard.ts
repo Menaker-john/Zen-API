@@ -2,7 +2,6 @@ import {
   ConflictException,
   ExecutionContext,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from '../auth.service';
 import { Credentials } from '../dtos/credentials.dto';
@@ -12,9 +11,12 @@ export class NewUser {
   constructor(private authService: AuthService) { }
 
   async canActivate(context: ExecutionContext) {
-    const request = context.switchToHttp().getRequest();
-    const user = request.body;
+    const user = this.getUser(context)
     return await this.validateRequest(user);
+  }
+
+  private getUser(context: ExecutionContext) {
+    return context.switchToHttp().getRequest().body;
   }
 
   private async validateRequest(user: Credentials) {
@@ -23,5 +25,4 @@ export class NewUser {
 
     return true;
   }
-
 }
