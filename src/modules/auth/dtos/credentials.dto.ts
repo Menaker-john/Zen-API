@@ -4,7 +4,7 @@ import { Role } from 'src/modules/roles';
 
 export class Credentials {
   _id: mongoose.Types.ObjectId;
-  
+
   @IsString()
   @IsNotEmpty()
   username: string;
@@ -12,6 +12,7 @@ export class Credentials {
   @IsString()
   @IsNotEmpty()
   password: string;
+
   roles: Role[];
   profile: mongoose.Types.ObjectId;
 }

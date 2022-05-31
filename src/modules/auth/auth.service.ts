@@ -65,8 +65,6 @@ export class AuthService {
   }
 
   private async comparePasswords(credentials: string, user: string) {
-    if (!(await compare(credentials, user)))
-      throw new UnauthorizedException();
+    if (!(await compare(credentials, user))) throw new UnauthorizedException();
   }
-
 }

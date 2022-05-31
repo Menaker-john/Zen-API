@@ -8,10 +8,10 @@ import { Credentials } from '../dtos/credentials.dto';
 
 @Injectable()
 export class NewUser {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   async canActivate(context: ExecutionContext) {
-    const user = this.getUser(context)
+    const user = this.getUser(context);
     return await this.validateRequest(user);
   }
 

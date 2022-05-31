@@ -6,7 +6,7 @@ import { Credentials } from '../dtos/credentials.dto';
 export class ToLowerUsername implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const user = req.body as Credentials;
-    user.username = (user.username || "").toLowerCase();
+    user.username = (user.username || '').toLowerCase();
     next();
   }
 }

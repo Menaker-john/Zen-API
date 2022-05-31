@@ -11,7 +11,7 @@ import { CreateUserId, ToLowerUsername } from './middleware';
 })
 export class AuthModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ToLowerUsername).forRoutes('auth')
+    consumer.apply(ToLowerUsername).forRoutes('auth');
     consumer.apply(CreateUserId).forRoutes('auth/create');
   }
 }
