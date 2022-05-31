@@ -17,7 +17,7 @@ export class NewUser {
     return await this.validateRequest(user);
   }
 
-  async validateRequest(user: Credentials) {
+  private async validateRequest(user: Credentials) {
     if (await this.authService.userAlreadyExists(user.username))
       throw new ConflictException();
 

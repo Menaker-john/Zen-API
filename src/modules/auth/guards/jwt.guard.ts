@@ -13,11 +13,9 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     super();
   }
 
-  private isPublic(context: ExecutionContext) {
-    return this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+  handleRequest(err: any, user: any) {
+    if (err || !user) throw err || new UnauthorizedException();
+    return user;
   }
 
   canActivate(context: ExecutionContext) {
@@ -25,9 +23,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     return super.canActivate(context);
   }
 
-  handleRequest(err: any, user: any) {
-    if (err || !user) throw err || new UnauthorizedException();
-
-    return user;
+  private isPublic(context: ExecutionContext) {
+    return this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
   }
 }

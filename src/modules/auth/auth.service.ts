@@ -13,22 +13,6 @@ import { Credentials } from './dtos/credentials.dto';
 export class AuthService {
   constructor(private repository: RepositoryService) {}
 
-  async signPayload(_id: Types.ObjectId): Promise<string> {
-    return sign({ _id }, process.env.SECRET_KEY, {
-      expiresIn: '1d',
-    });
-  }
-
-  async validate(payload: any) {
-    return this.repository.credentials.find(payload._id);
-  }
-
-  async login(credentials: Credentials) {
-    const user = await this.validateCredentials(credentials);
-    const token = await this.signPayload(user._id);
-    return { _id: user._id, token };
-  }
-
   async create(credentials: Credentials) {
     try {
       await this.repository.credentials.create(credentials);
@@ -37,9 +21,9 @@ export class AuthService {
     }
   }
 
-  async fetchByUsername(username: string): Promise<Credentials> {
+  async validate(payload: any) {
     try {
-      return this.repository.credentials.fetchOne({ username });
+      return this.repository.credentials.find(payload._id);
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -47,22 +31,42 @@ export class AuthService {
 
   async userAlreadyExists(username: string) {
     try {
-      return (await this.fetchByUsername(username)) != undefined;
+      return (await this.fetchUserByUsername(username)) != undefined;
     } catch (error) {
       throw new InternalServerErrorException();
     }
   }
 
+  async login(credentials: Credentials) {
+    const user = await this.validateCredentials(credentials);
+    const token = await this.signPayload(user._id);
+    return { _id: user._id, token };
+  }
+
   private async validateCredentials(credentials: Credentials) {
-    const user = await this.repository.credentials.fetchOne({
-      username: credentials.username,
-    });
-
+    const user = await this.fetchUserByUsername(credentials.username);
     if (!user) throw new UnauthorizedException();
-
-    if (!(await compare(credentials.password, user.password)))
-      throw new UnauthorizedException();
-
+    await this.comparePasswords(credentials.password, user.password);
     return user;
   }
+
+  private async signPayload(_id: Types.ObjectId): Promise<string> {
+    return sign({ _id }, process.env.SECRET_KEY, {
+      expiresIn: '1d',
+    });
+  }
+
+  private async fetchUserByUsername(username: string): Promise<Credentials> {
+    try {
+      return this.repository.credentials.fetchOne({ username });
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  private async comparePasswords(credentials: string, user: string) {
+    if (!(await compare(credentials, user)))
+      throw new UnauthorizedException();
+  }
+
 }
