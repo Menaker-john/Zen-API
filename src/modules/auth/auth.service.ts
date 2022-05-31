@@ -23,7 +23,9 @@ export class AuthService {
 
   async validate(payload: any) {
     try {
-      return this.repository.credentials.find(payload._id);
+      const doc = await this.repository.credentials.find(payload._id);
+      doc._id = payload._id;
+      return doc;
     } catch (error) {
       throw new InternalServerErrorException();
     }

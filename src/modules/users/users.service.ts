@@ -18,7 +18,7 @@ export class UsersService {
     }
   }
 
-  async updateCredentials(_id: string, patches: PatchDTO[]) {
+  async updateCredentials(_id: string, patches: PatchDTO[]): Promise<User>  {
     try {
       return this.repository.credentials.applyPatches(_id, patches);
     } catch (error) {
