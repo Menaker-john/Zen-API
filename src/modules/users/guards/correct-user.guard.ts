@@ -8,24 +8,15 @@ export class CorrectUser {
 
   async canActivate(context: ExecutionContext) {
     const request = this.getRequest(context);
-    const params = this.getParams(request);
-    const user = this.getUser(request);
-    return await this.validateRequest(params, user);
+    return await this.validateRequest(request);
   }
 
   private getRequest(context: ExecutionContext) {
     return context.switchToHttp().getRequest()
   }
-  
-  private getParams(request: any) {
-    return request.params;
-  }
 
-  private getUser(request: any) {
-    return request.user
-  }
-
-  private async validateRequest(params: any, user: any) {
+  private async validateRequest(request: any) {
+    const { params, user } = request;
     if (!params || !user) return false;
     return params.id === user._id
   }

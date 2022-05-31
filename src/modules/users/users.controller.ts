@@ -13,11 +13,11 @@ import { CorrectUser } from './guards/correct-user.guard';
 import { Role, Roles } from '../roles';
 import { UsersService } from './users.service';
 
-@Roles(Role.Admin)
 @Controller('users')
 export class UsersController {
   constructor(private userService: UsersService) {}
 
+  @Roles(Role.Admin)
   @Get('list')
   async list(@Query() options: PaginationParams) {
     return this.userService.findAll(options);
