@@ -9,7 +9,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { PaginationParams, PatchDTO } from 'src/common';
-import { CorrectUser } from './guards/correct-user.guard';
 import { Role, Roles } from '../roles';
 import { UsersService } from './users.service';
 
@@ -23,7 +22,6 @@ export class UsersController {
     return this.userService.findAll(options);
   }
 
-  @UseGuards(CorrectUser)
   @Patch(':id')
   async updateCredentials(
     @Param('id') id: string,
