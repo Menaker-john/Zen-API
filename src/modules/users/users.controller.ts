@@ -6,7 +6,6 @@ import {
   ParseArrayPipe,
   Patch,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { PaginationParams, PatchDTO } from 'src/common';
 import { Role, Roles } from '../roles';
@@ -19,9 +18,11 @@ export class UsersController {
   @Roles(Role.Admin)
   @Get('list')
   async list(@Query() options: PaginationParams) {
-    return this.userService.findAll(options);
+    const data = await this.userService.findAll(options)
+    return { data };
   }
 
+  @Roles(Role.Admin)
   @Patch(':id')
   async updateCredentials(
     @Param('id') id: string,

@@ -12,7 +12,7 @@ export class UsersService {
         {},
         ['profile'],
         options,
-      );
+      )
     } catch (error) {
       throw new InternalServerErrorException();
     }
