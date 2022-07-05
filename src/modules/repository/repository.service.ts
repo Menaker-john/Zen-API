@@ -8,6 +8,8 @@ import {
   CredentialsDocument,
   Profile,
   ProfileDocument,
+  Customer,
+  CustomerDocument,
 } from 'src/schema';
 import { GenericRepositoryService } from './generic.service';
 import { GenericRepository } from './repositories/generic.repository';
@@ -19,6 +21,7 @@ export class RepositoryService
   users: GenericRepository<User>;
   credentials: GenericRepository<Credentials>;
   profiles: GenericRepository<Profile>;
+  customers: GenericRepository<Customer>;
 
   constructor(
     @InjectModel(User.name) private UserRepository: Model<UserDocument>,
@@ -26,6 +29,8 @@ export class RepositoryService
     private CredentialsRepository: Model<CredentialsDocument>,
     @InjectModel(Profile.name)
     private ProfileRepository: Model<ProfileDocument>,
+    @InjectModel(Customer.name)
+    private CustomerRepository: Model<CustomerDocument>,
   ) {}
 
   onApplicationBootstrap() {
@@ -34,5 +39,6 @@ export class RepositoryService
       this.CredentialsRepository,
     );
     this.profiles = new MongoGenericRepository<Profile>(this.ProfileRepository);
+    this.customers = new MongoGenericRepository<Customer>(this.CustomerRepository);
   }
 }

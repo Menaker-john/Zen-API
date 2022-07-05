@@ -1,15 +1,9 @@
 import * as mongoose from 'mongoose';
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ContactInfo } from './contact-info.schema';
+import { CustomerStatus } from 'src/common';
 
 export type CustomerDocument = Customer & mongoose.Document;
-
-enum Status {
-  Prospective = 'Prospective',
-  Active = 'Active',
-  Deactivated = 'Deactivated',
-  Canceled = 'Canceled',
-}
 
 @Schema()
 export class Customer {
@@ -23,12 +17,13 @@ export class Customer {
       last: { type: String },
     }),
   )
+  name: Record<string, string>;
 
   @Prop()
   contactInfo: ContactInfo;
 
-  @Prop({type: String, enum: Status})
-  status: Status;
+  @Prop({type: String, enum: CustomerStatus})
+  status: CustomerStatus;
 
   @Prop({type: mongoose.Types.ObjectId, ref: 'Profile'})
   accountOwner: mongoose.Types.ObjectId
