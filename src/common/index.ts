@@ -1,2 +1,3 @@
 export * from './dtos';
-export { CustomerStatus } from './customer.status';
+export * from './customer.status';
+export * from './middleware'

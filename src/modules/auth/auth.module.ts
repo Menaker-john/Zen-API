@@ -1,8 +1,9 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { CreateId } from 'src/common';
 import { RepositoryModule } from '../repository';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { CreateUserId, ToLowerUsername } from './middleware';
+import { ToLowerUsername } from './middleware';
 
 @Module({
   imports: [RepositoryModule],
@@ -12,6 +13,6 @@ import { CreateUserId, ToLowerUsername } from './middleware';
 export class AuthModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(ToLowerUsername).forRoutes('auth');
-    consumer.apply(CreateUserId).forRoutes('auth/create');
+    consumer.apply(CreateId).forRoutes('auth/create');
   }
 }

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
@@ -8,6 +8,8 @@ import { AuthModule, AuthService, JwtAuthGuard, JwtStrategy } from '../auth';
 import { RepositoryModule } from '../repository';
 import { RolesGuard } from '../roles';
 import { UsersModule } from '../users';
+import { GenerateSort } from 'src/common/middleware/generate.sort';
+import { CustomersModule } from '../customers/customers.module';
 
 @Module({
   imports: [
@@ -20,6 +22,7 @@ import { UsersModule } from '../users';
     RepositoryModule,
     UsersModule,
     AuthModule,
+    CustomersModule,
   ],
   controllers: [],
   providers: [
@@ -39,4 +42,8 @@ import { UsersModule } from '../users';
     AuthService,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(GenerateSort).forRoutes('*/list');
+  }
+}

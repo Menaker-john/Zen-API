@@ -7,4 +7,5 @@ export class Customer {
   contactInfo: ContactInfo;
   status: CustomerStatus
   accountOwner: Types.ObjectId;
+  owner: Types.ObjectId;
 }

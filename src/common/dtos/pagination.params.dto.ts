@@ -8,4 +8,6 @@ export class PaginationParams {
   @Min(1)
   @Max(100)
   limit: number;
+
+  sort?: Record<string, string>
 }

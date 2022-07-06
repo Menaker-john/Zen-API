@@ -18,6 +18,7 @@ export class UsersController {
   @Roles(Role.Admin)
   @Get('list')
   async list(@Query() options: PaginationParams) {
+    //options.sort = {'username': -1}
     const data = await this.userService.findAll(options);
     return { data };
   }

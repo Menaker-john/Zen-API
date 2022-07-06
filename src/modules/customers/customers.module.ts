@@ -1,4 +1,5 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { CreateId } from 'src/common';
 import { RepositoryModule } from '../repository';
 import { CustomersController } from './customers.controller';
 import { CustomersService } from './customers.service';
@@ -9,4 +10,8 @@ import { CustomersService } from './customers.service';
   providers: [CustomersService],
   exports: [],
 })
-export class CustomersModule {}
+export class CustomersModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CreateId).forRoutes('customers/create');
+  }
+}

@@ -7,10 +7,11 @@ import { Customer } from './dtos/customer.dto';
 export class CustomersService {
   constructor(private repository: RepositoryService) {}
 
-  async findAll(options: PaginationParams): Promise<Customer[]> {
+  async findAll(options: PaginationParams, filter: any = {}): Promise<Customer[]> {
     try {
+      console.log({filter})
       return this.repository.customers.findAndHydrate(
-        {},
+        filter,
         ['accountOwner'],
         options
       );
