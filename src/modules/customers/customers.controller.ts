@@ -1,8 +1,6 @@
-import { Body, Controller, Get, Post, Query, Req, UseInterceptors } from '@nestjs/common';
-import { Request } from 'express';
-import { PaginationParams } from 'src/common';
-import { OwnershipInterceptor } from '../ownership/interceptors/ownership.interceptor';
-import { Role, Roles } from '../roles';
+import { Body, Controller, Get, Param, ParseArrayPipe, Patch, Post, Query } from '@nestjs/common';
+import { PaginationParams, PatchDTO } from 'src/common';
+import { OwnerFilter } from '../ownership';
 import { CustomersService } from './customers.service';
 import { Customer } from './dtos/customer.dto';
 
@@ -10,10 +8,9 @@ import { Customer } from './dtos/customer.dto';
 export class CustomersController {
   constructor(private customerService: CustomersService) {}
 
-  @UseInterceptors(OwnershipInterceptor)
   @Get('list')
-  async list(@Req() req, @Query() options: PaginationParams) {
-    const data = await this.customerService.findAll(options, req.filter);
+  async list(@OwnerFilter('owner') filter: Record<string, any>, @Query() options: PaginationParams) {
+    const data = await this.customerService.findAll(options, filter);
     return { data };
   }
 
@@ -21,4 +18,13 @@ export class CustomersController {
   async create(@Body() customerPayload: Customer) {
     return this.customerService.create(customerPayload);
   }
+
+  @Patch(':id')
+  async updateCustomer(
+    @Param('id') id: string,
+    @Body(new ParseArrayPipe({ items: PatchDTO })) body: PatchDTO[],
+  ) {
+    return this.customerService.update(id, body);
+  }
+
 }

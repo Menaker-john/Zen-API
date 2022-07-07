@@ -1,7 +1,6 @@
 import { Model, Types } from 'mongoose';
 import { GenericRepository } from '..';
 import * as patchToMongodb from 'jsonpatch-to-mongodb';
-
 export class MongoGenericRepository<T> implements GenericRepository<T> {
   constructor(private _repository: Model<T>) {}
 
@@ -43,8 +42,8 @@ export class MongoGenericRepository<T> implements GenericRepository<T> {
     const update = patchToMongodb(patches);
     const objId = Types.ObjectId.createFromHexString(_id);
     return this._repository
-      .findByIdAndUpdate(objId, update, { new: true, fields: { password: 0 } })
-      .exec();
+    .findByIdAndUpdate(objId, update, { new: true, fields: { password: 0 } })
+    .exec();
   }
 
   create(item: T): Promise<T> {

@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { PaginationParams } from 'src/common';
+import { PaginationParams, PatchDTO } from 'src/common';
 import { RepositoryService } from '../repository';
 import { Customer } from './dtos/customer.dto';
 
@@ -9,7 +9,6 @@ export class CustomersService {
 
   async findAll(options: PaginationParams, filter: any = {}): Promise<Customer[]> {
     try {
-      console.log({filter})
       return this.repository.customers.findAndHydrate(
         filter,
         ['accountOwner'],
@@ -22,6 +21,15 @@ export class CustomersService {
 
   async create(customer: Customer): Promise<Customer> {
     return this.repository.customers.create(customer)
+  }
+
+  async update(_id: string, patches: PatchDTO[]): Promise<Customer> {
+    try {
+      return this.repository.customers.applyPatches(_id, patches);
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException();
+    }
   }
 
 }

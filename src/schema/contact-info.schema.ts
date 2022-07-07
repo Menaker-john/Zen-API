@@ -27,11 +27,13 @@ class Addresses {
   @Prop({ type: AddressSchema }) shipping: Address;
 }
 
+const AddressesSchema = SchemaFactory.createForClass(Addresses);
+
 @Schema({ _id: false })
 export class ContactInfo {
   @Prop({ type: PhonesSchema }) phones: Phones;
   @Prop() email: string;
-  @Prop({ type: AddressSchema }) addresses: Addresses;
+  @Prop({ type: AddressesSchema }) addresses: Addresses;
 }
 
 export const ContactInfoSchema = SchemaFactory.createForClass(ContactInfo);
