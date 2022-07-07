@@ -21,5 +21,5 @@ class Addresses {
 export class ContactInfo {
   phones: Phones;
   email: string;
-  addresses: Addresses
+  addresses: Addresses;
 }

@@ -12,13 +12,13 @@ export class UsersService {
         {},
         ['profile'],
         options,
-      )
+      );
     } catch (error) {
       throw new InternalServerErrorException();
     }
   }
 
-  async updateCredentials(_id: string, patches: PatchDTO[]): Promise<User>  {
+  async updateCredentials(_id: string, patches: PatchDTO[]): Promise<User> {
     try {
       return this.repository.credentials.applyPatches(_id, patches);
     } catch (error) {

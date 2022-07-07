@@ -23,12 +23,11 @@ export class Customer extends Ownable {
   @Prop()
   contactInfo: ContactInfo;
 
-  @Prop({type: String, enum: CustomerStatus})
+  @Prop({ type: String, enum: CustomerStatus })
   status: CustomerStatus;
 
-  @Prop({type: mongoose.Types.ObjectId, ref: 'Profile'})
-  accountOwner: mongoose.Types.ObjectId
-
+  @Prop({ type: mongoose.Types.ObjectId, ref: 'Profile' })
+  accountOwner: mongoose.Types.ObjectId;
 }
 
 export const CustomerSchema = SchemaFactory.createForClass(Customer);

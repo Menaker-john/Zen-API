@@ -7,12 +7,15 @@ import { Customer } from './dtos/customer.dto';
 export class CustomersService {
   constructor(private repository: RepositoryService) {}
 
-  async findAll(options: PaginationParams, filter: any = {}): Promise<Customer[]> {
+  async findAll(
+    options: PaginationParams,
+    filter: any = {},
+  ): Promise<Customer[]> {
     try {
       return this.repository.customers.findAndHydrate(
         filter,
         ['accountOwner'],
-        options
+        options,
       );
     } catch (error) {
       throw new InternalServerErrorException();
@@ -20,7 +23,7 @@ export class CustomersService {
   }
 
   async create(customer: Customer): Promise<Customer> {
-    return this.repository.customers.create(customer)
+    return this.repository.customers.create(customer);
   }
 
   async update(_id: string, patches: PatchDTO[]): Promise<Customer> {
@@ -31,5 +34,4 @@ export class CustomersService {
       throw new InternalServerErrorException();
     }
   }
-
 }

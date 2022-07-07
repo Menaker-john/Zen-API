@@ -9,5 +9,5 @@ export class PaginationParams {
   @Max(100)
   limit: number;
 
-  sort?: Record<string, string>
+  sort?: Record<string, string>;
 }

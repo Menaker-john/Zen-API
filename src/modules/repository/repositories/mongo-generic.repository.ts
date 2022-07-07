@@ -42,8 +42,8 @@ export class MongoGenericRepository<T> implements GenericRepository<T> {
     const update = patchToMongodb(patches);
     const objId = Types.ObjectId.createFromHexString(_id);
     return this._repository
-    .findByIdAndUpdate(objId, update, { new: true, fields: { password: 0 } })
-    .exec();
+      .findByIdAndUpdate(objId, update, { new: true, fields: { password: 0 } })
+      .exec();
   }
 
   create(item: T): Promise<T> {

@@ -39,6 +39,8 @@ export class RepositoryService
       this.CredentialsRepository,
     );
     this.profiles = new MongoGenericRepository<Profile>(this.ProfileRepository);
-    this.customers = new MongoGenericRepository<Customer>(this.CustomerRepository);
+    this.customers = new MongoGenericRepository<Customer>(
+      this.CustomerRepository,
+    );
   }
 }

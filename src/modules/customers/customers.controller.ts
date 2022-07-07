@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, ParseArrayPipe, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseArrayPipe,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { PaginationParams, PatchDTO } from 'src/common';
 import { OwnerFilter } from '../ownership';
 import { CustomersService } from './customers.service';
@@ -9,7 +18,10 @@ export class CustomersController {
   constructor(private customerService: CustomersService) {}
 
   @Get('list')
-  async list(@OwnerFilter('owner') filter: Record<string, any>, @Query() options: PaginationParams) {
+  async list(
+    @OwnerFilter('owner') filter: Record<string, any>,
+    @Query() options: PaginationParams,
+  ) {
     const data = await this.customerService.findAll(options, filter);
     return { data };
   }
@@ -26,5 +38,4 @@ export class CustomersController {
   ) {
     return this.customerService.update(id, body);
   }
-
 }
